@@ -1,10 +1,19 @@
+import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { nanoid } from "nanoid";
 import { roomManager } from "./roomManager";
 import { ClientSession } from "./types";
 
 const PORT = Number(process.env.PORT) || 8080;
-const wss = new WebSocketServer({ port: PORT });
+
+const httpServer = createServer((_req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("ok");
+});
+
+const wss = new WebSocketServer({ server: httpServer });
+
+httpServer.listen(PORT);
 
 const clients = new Map<string, ClientSession>();
 

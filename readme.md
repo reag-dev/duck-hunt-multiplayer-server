@@ -59,6 +59,15 @@ npm test
 
 ---
 
+## Deploy (Railway)
+
+- Railway detecta o projeto Node automaticamente e injeta `PORT` — nenhuma config extra necessária.
+- Build: `npm run build` (esbuild, gera `dist/server.js`). Start: `npm start`.
+- O servidor responde `200 OK` em requisições HTTP simples (`GET /`), usado como health check pelo Railway; conexões WebSocket seguem via upgrade normalmente.
+- Após o deploy, copie a URL gerada (troque `https://` por `wss://`) e configure como `VITE_WS_URL` no frontend.
+
+---
+
 ## Protocolo WebSocket (resumo)
 
 ### Criar sala (host)
