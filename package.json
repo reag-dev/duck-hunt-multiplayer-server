@@ -1,0 +1,24 @@
+{
+  "name": "aim-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "node build.mjs",
+    "start": "node dist/server.js",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "nanoid": "^5.1.6",
+    "vitest": "^4.0.16",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.1",
+    "esbuild": "^0.20.2",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.0"
+  }
+}
