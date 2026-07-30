@@ -42,7 +42,7 @@ describe("WebSocket Server", () => {
 
     const roomId = hostWs.sent[0].roomId;
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       const ws = new MockWebSocket();
       handleConnection(ws);
       ws.emitMessage({ type: "join-room", roomId });
@@ -62,7 +62,7 @@ describe("WebSocket Server", () => {
 
     const roomId = hostWs.sent[0].roomId;
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 3; i++) {
       const ws = new MockWebSocket();
       handleConnection(ws);
       ws.emitMessage({ type: "join-room", roomId });

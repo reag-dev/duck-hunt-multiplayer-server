@@ -10,8 +10,8 @@ class RoomManager {
     const room: Room = {
       id: roomId,
       hostId,
-      maxPlayers: 5,
-      availablePlayerIds: [1, 2, 3, 4, 5],
+      maxPlayers: 4,
+      availablePlayerIds: [1, 2, 3, 4],
       controllers: new Map(),
     };
 
