@@ -1,4 +1,4 @@
-import { createServer } from "http";
+import { createServer } from "node:http";
 import { WebSocketServer } from "ws";
 import { nanoid } from "nanoid";
 import { roomManager } from "./roomManager";
@@ -16,6 +16,20 @@ const wss = new WebSocketServer({ server: httpServer });
 httpServer.listen(PORT);
 
 const clients = new Map<string, ClientSession>();
+
+function isValidInputPayload(payload: any): boolean {
+  if (typeof payload !== "object" || payload === null) return false;
+
+  const { gamma, beta, shoot, recalibrate } = payload;
+
+  if (gamma !== undefined && !Number.isFinite(gamma)) return false;
+  if (beta !== undefined && !Number.isFinite(beta)) return false;
+  if (shoot !== undefined && typeof shoot !== "boolean") return false;
+  if (recalibrate !== undefined && typeof recalibrate !== "boolean")
+    return false;
+
+  return true;
+}
 
 wss.on("connection", (ws) => {
   const clientId = nanoid(12);
@@ -123,6 +137,7 @@ wss.on("connection", (ws) => {
      */
     if (data.type === "input") {
       if (client.role !== "controller" || !client.roomId) return;
+      if (!isValidInputPayload(data.payload)) return;
 
       const room = roomManager.findRoomByClientId(client.id);
       if (!room) return;
@@ -145,6 +160,15 @@ wss.on("connection", (ws) => {
     clients.delete(clientId);
 
     if (client.role === "host" && client.roomId) {
+      const room = roomManager.getRoom(client.roomId);
+
+      room?.controllers.forEach((controller) => {
+        if (!controller.connected) return;
+        clients.get(controller.clientId)?.ws.send(
+          JSON.stringify({ type: "room-closed" }),
+        );
+      });
+
       roomManager.removeRoom(client.roomId);
       return;
     }

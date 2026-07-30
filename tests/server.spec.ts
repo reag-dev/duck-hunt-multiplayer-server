@@ -121,4 +121,24 @@ describe("WebSocket Server", () => {
     expect(last.type).toBe("input");
     expect(last.payload.shoot).toBe(true);
   });
+
+  it("should drop malformed input payloads instead of relaying them", () => {
+    const hostWs = new MockWebSocket();
+    handleConnection(hostWs);
+    hostWs.emitMessage({ type: "create-room" });
+    const roomId = hostWs.sent[0].roomId;
+
+    const controllerWs = new MockWebSocket();
+    handleConnection(controllerWs);
+    controllerWs.emitMessage({ type: "join-room", roomId });
+
+    const sentBeforeCount = hostWs.sent.length;
+
+    controllerWs.emitMessage({
+      type: "input",
+      payload: { gamma: "not-a-number" },
+    });
+
+    expect(hostWs.sent.length).toBe(sentBeforeCount);
+  });
 });
