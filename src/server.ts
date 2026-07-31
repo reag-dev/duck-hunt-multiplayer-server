@@ -164,9 +164,9 @@ wss.on("connection", (ws) => {
 
       room?.controllers.forEach((controller) => {
         if (!controller.connected) return;
-        clients.get(controller.clientId)?.ws.send(
-          JSON.stringify({ type: "room-closed" }),
-        );
+        clients
+          .get(controller.clientId)
+          ?.ws.send(JSON.stringify({ type: "room-closed" }));
       });
 
       roomManager.removeRoom(client.roomId);

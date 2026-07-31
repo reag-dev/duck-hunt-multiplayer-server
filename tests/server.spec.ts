@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { MockWebSocket } from "./mocks/mockWebSocket";
 import { handleConnection } from "../src/server";
 import { roomManager } from "../src/roomManager";
